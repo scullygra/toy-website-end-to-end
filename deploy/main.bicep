@@ -1,6 +1,9 @@
 @description('The location into which your Azure resources should be deployed.')
 param location string = resourceGroup().location
 
+@description('The location into which the Application Insights resource should be deployed.')
+param appInsightsLocation string = 'australiaeast'
+
 @description('Select the type of environment you want to provision. Allowed values are Production and Test.')
 @allowed([
   'Production'
@@ -91,11 +94,10 @@ resource appServiceApp 'Microsoft.Web/sites@2021-01-15' = {
 
 resource applicationInsights 'Microsoft.Insights/components@2020-02-02' = {
   name: applicationInsightsName
-  location: location
+  location: appInsightsLocation
   kind: 'web'
   properties: {
     Application_Type: 'web'
-    IngestionMode: 'LogAnalytics'
     Request_Source: 'rest'
     Flow_Type: 'Bluefield'
   }
